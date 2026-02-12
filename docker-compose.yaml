@@ -6,6 +6,8 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/app:/aplication/app
+      - ./backend/alembic:/aplication/alembic
+      - ./backend/alembic.ini:/aplication/alembic.ini
     env_file:
       - .env
     environment:
