@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from ..base import Base
-from sqlalchemy.orm import Mapped, mapped_column, relationship, ForeignKey
-from sqlalchemy import Boolean, DateTime, Integer, String, func, Enum
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Boolean, DateTime, Integer, String, func, Enum, ForeignKey
 from datetime import datetime
 import enum
 from typing import TYPE_CHECKING

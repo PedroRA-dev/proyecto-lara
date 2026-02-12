@@ -5,7 +5,7 @@ from sqlalchemy import DateTime, ForeignKey, Integer, String, func, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ..base import Base
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from .user import User
@@ -45,9 +45,9 @@ class RefreshToken(Base):
     created_by_ip: Mapped[str | None] = mapped_column(String(45), nullable=True)      # IPv4/IPv6
     created_by_ua: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
-    user: Mapped["User"] = relationship(back_populates="refresh_token")
+    user: Mapped["User"] = relationship(back_populates="refresh_tokens")
 
-    replaced_by: Mapped["RefreshToken" | None] = relationship(
+    replaced_by: Mapped[Optional["RefreshToken"]] = relationship(
         remote_side="RefreshToken.id",
         uselist=False,
     )
