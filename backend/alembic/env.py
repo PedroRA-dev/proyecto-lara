@@ -7,35 +7,13 @@ from alembic import context
 from app.db.base import Base
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 import app.db.models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
-# Always load variables from ../.env (parent directory of backend)
-PARENT_ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
-load_dotenv(PARENT_ENV_PATH)
-
-db_parts = {
-    "DB_USER": os.getenv("DB_USER"),
-    "DB_PASSWORD": os.getenv("DB_PASSWORD"),
-    "DB_HOST": os.getenv("DB_HOST"),
-    "DB_PORT": os.getenv("DB_PORT"),
-    "DB_NAME": os.getenv("DB_NAME"),
-}
-
-missing = [key for key, value in db_parts.items() if not value]
-if missing:
-    raise RuntimeError(
-        "Faltan variables de entorno para Alembic: "
-        + ", ".join(missing)
-        + f" (buscado en {PARENT_ENV_PATH})"
-    )
-
-database_url = f"postgresql://{db_parts['DB_USER']}:{db_parts['DB_PASSWORD']}@{db_parts['DB_HOST']}:{db_parts['DB_PORT']}/{db_parts['DB_NAME']}"
-
+database_url = os.getenv("DATABASE_URL")
 config.set_main_option("sqlalchemy.url", database_url)
 
 
