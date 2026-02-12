@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/aplication/app
+    env_file:
+      - .env
+    environment:
+      PYTHONUNBUFFERED: 1
+      DATABASE_URL: "postgresql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}"
+
+
+  frontend:
+    image: node:20-alpine
+    working_dir: /frontend
+    volumes:
+      - ./frontend:/frontend
+    environment:
+      - CHOKIDAR_USERPOLLING=true
+      - WATCHPACK_POLLING=true
+      - CI=true
+    command: sh -c "npm install -g pnpm@latest && pnpm install && pnpm dev --host 0.0.0.0 --port 5173"
+    ports:
+      - "5173:5173"
+      
+  db:
+    image: postgres:18.1-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+     - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_PORT: ${DB_PORT}
