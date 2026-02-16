@@ -31,7 +31,7 @@ class Booking(Base):
     end_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     
     experience_id: Mapped[int] = mapped_column(ForeignKey("experience.id", ondelete="CASCADE"), nullable=False, index=True)
-    experience: Mapped[list["Experience"]] = relationship("Experience", back_populates="booking")
+    experience: Mapped["Experience"] = relationship("Experience", back_populates="bookings")
     status: Mapped[BookingStatus] = mapped_column(Enum(BookingStatus), nullable=False, server_default=BookingStatus.pending.value)
 
 
